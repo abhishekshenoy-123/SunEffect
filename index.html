@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #0b0b16;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Shared ball styling */
+        #ball1,
+        #ball2 {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            z-index: 2;
+
+            background: radial-gradient(
+                circle,
+                #fff7a0 0%,
+                #ffb52e 25%,
+                #ff6500 55%,
+                rgba(255, 65, 0, 0.3) 75%,
+                transparent 100%
+            );
+
+            filter: blur(25px);
+            opacity: 0.9;
+            will-change: transform, filter, opacity;
+        }
+
+        /* First ball */
+        #ball1 {
+            top: 30%;
+            left: 40%;
+            animation: moveLeft 8s ease-in-out infinite alternate,
+                       ballGlow 4s ease-in-out infinite;
+        }
+
+        /* Second ball */
+        #ball2 {
+            top: 35%;
+            left: 45%;
+            animation: moveRight 8s ease-in-out infinite alternate,
+                       ballGlow 4s ease-in-out infinite;
+        }
+
+        /* Ambient glow behind both balls */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 400px;
+            height: 300px;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: radial-gradient(
+                ellipse,
+                rgba(255, 90, 0, 0.25),
+                rgba(255, 170, 0, 0.10) 40%,
+                transparent 70%
+            );
+            filter: blur(40px);
+            animation: energyGlow 4s ease-in-out infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Leftward movement */
+        @keyframes moveLeft {
+            0% {
+                transform: translateX(0) scale(1);
+            }
+            100% {
+                transform: translateX(-120px) scale(1.1);
+            }
+        }
+
+        /* Rightward movement */
+        @keyframes moveRight {
+            0% {
+                transform: translateX(0) scale(1);
+            }
+            100% {
+                transform: translateX(120px) scale(0.95);
+            }
+        }
+
+        /* Pulsing light on the balls */
+        @keyframes ballGlow {
+            0%, 100% {
+                filter: blur(25px)
+                        drop-shadow(0 0 15px rgba(255, 90, 0, 0.4));
+                opacity: 0.8;
+            }
+
+            50% {
+                filter: blur(20px)
+                        drop-shadow(0 0 45px rgba(255, 150, 0, 0.9))
+                        drop-shadow(0 0 80px rgba(255, 50, 0, 0.6));
+                opacity: 1;
+            }
+        }
+
+        /* Expanding ambient energy */
+        @keyframes energyGlow {
+            0%, 100% {
+                opacity: 0.35;
+                transform: translate(-50%, -50%) scale(0.8);
+                filter: blur(40px);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.3);
+                filter: blur(25px);
+            }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            #ball1,
+            #ball2 {
+                width: 180px;
+                height: 180px;
+                filter: blur(20px);
+            }
+
+            #ball1 {
+                top: 35%;
+                left: 20%;
+            }
+
+            #ball2 {
+                top: 40%;
+                left: 35%;
+            }
+
+            body::before {
+                width: 300px;
+                height: 240px;
+            }
+
+            @keyframes moveLeft {
+                0% {
+                    transform: translateX(0) scale(1);
+                }
+                100% {
+                    transform: translateX(-60px) scale(1.1);
+                }
+            }
+
+            @keyframes moveRight {
+                0% {
+                    transform: translateX(0) scale(1);
+                }
+                100% {
+                    transform: translateX(60px) scale(0.95);
+                }
+            }
+        }
+
+        /* Respect reduced-motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            #ball1,
+            #ball2,
+            body::before {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="ball1"></div>
+    <div id="ball2"></div>
+</body>
+</html>
